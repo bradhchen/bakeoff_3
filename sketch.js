@@ -86,7 +86,7 @@ function draw() {
     fill(255, 0, 0);
     rect(200, 400, 100, 100); //draw next button
     fill(255);
-    text("NEXT > ", 650, 650); //draw next label
+    text("NEXT > ", 200, 400); //draw next label
 
     //my draw code that you should replace.
     fill(255, 0, 0); //red button
@@ -128,7 +128,7 @@ function mousePressed() {
   }
 
   //You are allowed to have a next button outside the 1" area
-  if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
+  if (didMouseClick(200, 400, 100, 100)) //check if click is in next button
   {
     nextTrial(); //if so, advance to next trial
   }
