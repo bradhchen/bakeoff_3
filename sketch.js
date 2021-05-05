@@ -1,4 +1,4 @@
-const DPIofYourDeviceScreen = 140; //you will need to measure or look up the DPI or PPI of your device/browser to make sure you get the right scale!!
+const DPIofYourDeviceScreen = 150; //you will need to measure or look up the DPI or PPI of your device/browser to make sure you get the right scale!!
 const sizeOfInputArea = DPIofYourDeviceScreen*1.0; //aka, 1.0 inches square!
 
 let totalTrialNum = 2; //the total number of phrases to be tested - set this low for testing. Might be ~10 for the real bakeoff!
@@ -38,18 +38,18 @@ function draw() {
   {
     fill(0);
     textAlign(CENTER);
-    text("Trials complete!",400,200); //output
-    text("Total time taken: " + (finishTime - startTime),400,220); //output
-    text("Total letters entered: " + lettersEnteredTotal,400,240); //output
-    text("Total letters expected: " + lettersExpectedTotal,400,260); //output
-    text("Total errors entered: " + errorsTotal,400,280); //output
+    text("Trials complete!",150,200); //output
+    text("Total time taken: " + (finishTime - startTime),150,220); //output
+    text("Total letters entered: " + lettersEnteredTotal,150,240); //output
+    text("Total letters expected: " + lettersExpectedTotal,150,260); //output
+    text("Total errors entered: " + errorsTotal,150,280); //output
     wpm = (lettersEnteredTotal/5)/((finishTime - startTime)/60000); //FYI - 60K is number of milliseconds in minute
-    text("Raw WPM: " + wpm,400,300); //output
+    text("Raw WPM: " + wpm,150,300); //output
     freebieErrors = lettersExpectedTotal*.05; //no penalty if errors are under 5% of chars
-    text("Freebie errors: " + nf(freebieErrors,1,3),400,320); //output
+    text("Freebie errors: " + nf(freebieErrors,1,3),150,320); //output
     penalty = max(errorsTotal-freebieErrors, 0) * 0.5;
-    text("Penalty: " + penalty,400,340);
-    text("WPM w/ penalty: " + (wpm-penalty),400,360); //yes, minus, because higher WPM is better
+    text("Penalty: " + penalty,150,340);
+    text("WPM w/ penalty: " + (wpm-penalty),150,360); //yes, minus, because higher WPM is better
 
     return;
   }
@@ -84,7 +84,7 @@ function draw() {
 
     //draw very basic next button
     fill(255, 0, 0);
-    rect(600, 600, 200, 200); //draw next button
+    rect(200, 300, 100, 100); //draw next button
     fill(255);
     text("NEXT > ", 650, 650); //draw next label
 
