@@ -23,7 +23,7 @@ function setup() {
   //randomize the phrase order
   for (i=0; i<phrases.length; i++)
   {
-	r = random(0, phrases.length);
+	r = Math.floor(random(0, phrases.length));
 	temp = phrases[i];
 	phrases[i] = phrases[r];
 	phrases[r] = temp;
