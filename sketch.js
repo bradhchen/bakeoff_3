@@ -84,7 +84,7 @@ function draw() {
 
     //draw very basic next button
     fill(255, 0, 0);
-    rect(200, 300, 100, 100); //draw next button
+    rect(200, 400, 100, 100); //draw next button
     fill(255);
     text("NEXT > ", 650, 650); //draw next label
 
