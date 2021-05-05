@@ -1,4 +1,4 @@
-const DPIofYourDeviceScreen = 458; //you will need to measure or look up the DPI or PPI of your device/browser to make sure you get the right scale!!
+const DPIofYourDeviceScreen = 140; //you will need to measure or look up the DPI or PPI of your device/browser to make sure you get the right scale!!
 const sizeOfInputArea = DPIofYourDeviceScreen*1.0; //aka, 1.0 inches square!
 
 let totalTrialNum = 2; //the total number of phrases to be tested - set this low for testing. Might be ~10 for the real bakeoff!
@@ -17,7 +17,7 @@ let currentLetter = 'a'.charCodeAt();
 
 
 function setup() {
-  createCanvas(400, 800); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
+  createCanvas(400, 600); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
   noStroke(); //my code doesn't use any strokes.
 
   //randomize the phrase order
