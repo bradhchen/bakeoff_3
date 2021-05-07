@@ -15,19 +15,23 @@ let currentTyped = ""; //what the user has typed so far
 //Variables for my silly implementation. You can delete this:
 let currentLetter = 'a'.charCodeAt();
 
-
 function setup() {
   createCanvas(400, 600); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
   noStroke(); //my code doesn't use any strokes.
-
+  
   //randomize the phrase order
   for (i=0; i<phrases.length; i++)
   {
-	r = Math.floor(random(0, phrases.length));
-	temp = phrases[i];
-	phrases[i] = phrases[r];
-	phrases[r] = temp;
+  r = Math.floor(random(0, phrases.length));
+  temp = phrases[i];
+  phrases[i] = phrases[r];
+  phrases[r] = temp;
    }
+
+  setupNextButton()
+  setupFirstScreen()
+  setupSecondScreen()
+  console.log('testing setup entry')
 }
 
 function draw() {
@@ -36,6 +40,8 @@ function draw() {
   //check to see if the user finished. You can't change the score computation.
   if (finishTime!=0)
   {
+    hideWatch()
+    
     fill(0);
     textAlign(CENTER);
     text("Trials complete!",150,200); //output
@@ -54,22 +60,24 @@ function draw() {
     return;
   }
 
-  //draw 1" watch area
-  fill(100);
-  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
-
   //check to see if the user hasn't started yet
   if (startTime==0 & !mouseIsPressed)
   {
     fill(128);
     textAlign(CENTER);
-    text("Click to start time!", 280, 150); //display this message until the user clicks!
+    text("Site updated: v2.0", 200, 130);
+    text("Click to start time!", 200, 150); //display this message until the user clicks!
   }
 
   if (startTime==0 & mouseIsPressed)
   {
     nextTrial(); //start the trials!
+    showWatch()
   }
+
+  //draw 1" watch area
+  fill(100);
+  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
 
   //if start time does not equal zero, it means we must be in the trials
   if (startTime!=0)
@@ -80,58 +88,45 @@ function draw() {
     text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
     fill(128);
     text("Target:   " + currentPhrase, 70, 100); //draw the target string
-    text("Entered:  " + currentTyped + "|", 70, 140); //draw what the user has entered thus far 
+    text("Entered:  " + currentTyped + "_", 70, 140); //draw what the user has entered thus far 
 
-    //draw very basic next button
-    fill(255, 0, 0);
-    rect(200, 400, 100, 100); //draw next button
-    fill(255);
-    text("NEXT > ", 200, 400); //draw next label
-
-    //my draw code that you should replace.
-    fill(255, 0, 0); //red button
-    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
-    fill(0, 255, 0); //green button
-    rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
-    textAlign(CENTER);
-    fill(200);
-    text(String(String.fromCharCode(currentLetter)), width/2, height/2-sizeOfInputArea/4); //draw current letter
+    drawWatch()
   }
 }
 
+function touchMoved() {
+  return false
+}
+
+let leftSidePress = false
+let rightSidePress = false
 function mousePressed() {
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
-  {
-    if (currentLetter<=95) //wrap around to z
-      currentLetter = 'z'.charCodeAt();
-   else
-    currentLetter--;
+  if (mouseInLeftWatch()) {
+    leftSidePress = true
   }
-
-  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
-  {
-
-    if (currentLetter>=122) //wrap back to space (aka underscore)
-      currentLetter = '_'.charCodeAt();
-   else
-    currentLetter++;
+  if (mouseInRightWatch()) {
+    rightSidePress = true
   }
+}
 
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
-  {
-    if (currentLetter=='_') //if underscore, consider that a space bar
-      currentTyped = currentTyped + " ";
-    else if (currentLetter=='`' & currentTyped.length>0) //if `, treat that as a delete command
-      currentTyped = currentTyped.substring(0, currentTyped.length-1);
-    else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
-      currentTyped = currentTyped + String.fromCharCode(currentLetter);
+function mouseReleased() {
+  if (rightSidePress && mouseInLeftWatch()) {
+    if (inFirstScreen) {
+      letterButtonHandler('`') // Backspace
+    } else {
+      exitSecondScreen()
+    }
   }
-
-  //You are allowed to have a next button outside the 1" area
-  if (didMouseClick(200, 400, 100, 100)) //check if click is in next button
-  {
-    nextTrial(); //if so, advance to next trial
+  else if (leftSidePress && mouseInRightWatch()) {
+    if (inFirstScreen) {
+      letterButtonHandler('_') // Space
+    }
   }
+  else {
+    Button.checkButtonPress()
+  }
+  leftSidePress = false
+  rightSidePress = false
 }
 
 function nextTrial()
